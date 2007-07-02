@@ -68,10 +68,7 @@ A list object returned with the following variables.
 
 \item{fitted.values}{Data frame with $n$ lines and 2 columns containing the fitted values for $x$ and $y$.}
 
-\item{residuals}{Data frame with $n$ lines and 2 columns containing the residuals of the model for $x$ and $y$.
-
 \item{residuals}{Data frame with $n$ lines and 2 columns containing the residuals of the model for $x$ and $y$ given by $x-E(x)$ and $y-E(y)$ respectively; where $E(x)$ and $E(y)$ are given by the \code{fitted.values} .}
-}
  
 \item{beta1,beta2, beta3}{Vectors $\beta_1, \beta_2$ and $\beta_3$ containing the coefficients involved in the linear  predictors of  
 													$\lambda_1 , \lambda_2$ and $\lambda_3$ respectively. When \code{zeroL3=TRUE} then \code{beta3} is not calculated.}

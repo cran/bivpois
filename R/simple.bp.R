@@ -90,7 +90,7 @@ while ( (difllike>pres) && (i <= maxit) ) {
 	lambda2<-mean(x2)
 	lambda3<-mean(s)
 	#####   end of M step  ######
-	printpars<-c(i,lambda1, lambda2, lambda3, ,loglike[i] )
+	printpars<-c(i,lambda1, lambda2, lambda3, loglike[i] )
 	names(printpars)<-c('Iter.', 'lambda1', 'lambda2', 'lambda3','loglike' )
 	print( round(printpars ,3 ) )
 	cat( 'Relative Difference in Loglike:', difllike, '\n' ) 
