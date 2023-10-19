@@ -1,0 +1,15 @@
+46318c7959950393d5495a3dc08ff4dc *DESCRIPTION
+fe73634abdfa56d242e8fcf38d26b20b *NAMESPACE
+d67ef453fdcbad1bb3ba8f9c9d94b579 *R/bp.gof.R
+627a7ae22abdf6676c5a23eb948dd8cd *R/bp.gof2.R
+a4ddd1b10afcce6f284edd56061d2bb6 *R/bp.mle.R
+f0e17a502a8404e27d5d331dfd48b145 *R/bp.mle2.R
+fcbcd890d0f8140e0a06655bca65d716 *R/dbp.R
+136e6e705b203bf57847905d4c65e982 *R/lambda3.profile.R
+67c5405bd18d00a8a7b6790b011fc72d *R/rbp.R
+042e8b96fb8fef72f6dd9e0ee66a5b68 *man/bivpois-package.Rd
+8ce354e36ce29bd12503131c98789034 *man/bp.gof.Rd
+a3bc3f14f36c01b6005c6dca12b36946 *man/bp.mle.Rd
+b9ba94d03264219c1391856d52fc79e9 *man/dbp.Rd
+e83772e31177fad19f69b40bfb5e88c8 *man/lambda3.profile.Rd
+6b9203386b772cad65f348f325a3882e *man/rbp.Rd
