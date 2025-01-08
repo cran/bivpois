@@ -11,8 +11,8 @@ The Bivariate Poisson Distribution.
 \tabular{lll}{
 Package: \tab bivpois\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2023-10-18\cr
+Version: \tab 1.1\cr
+Date: \tab 2025-01-08\cr
 License: \tab GPL-2\cr
 }
 }

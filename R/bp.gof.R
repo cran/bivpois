@@ -18,8 +18,7 @@ bp.gof <- function(x1, x2 = NULL, R = 999) {
   v1 <- ( sum(x1^2) - n * m1^2 ) / (n - 1)
   v2 <- ( sum(x2^2) - n * m2^2 ) / (n - 1)
 
-  Ib <- n/(1 - r^2) * ( v1 / m1 + v2 / m2 -
-                          2 * r^2 * sqrt(v1 / m1 * v2 / m2) )  ## test statistic
+  Ib <- n/(1 - r^2) * ( v1 / m1 + v2 / m2 - 2 * r^2 * sqrt(v1 / m1 * v2 / m2) )  ## test statistic
   tab <- table(x1, x2)
   tb <- numeric(R)
   lambda <- bivpois::bp.mle(x1, x2)$lambda
@@ -32,8 +31,7 @@ bp.gof <- function(x1, x2 = NULL, R = 999) {
     m1 <- sum(z1)/n    ;    m2 <- sum(z2)/n
     s1 <- ( sum(z1^2) - n * m1^2 ) / (n - 1)
     s2 <- ( sum(z2^2) - n * m2^2 ) / (n - 1)
-    tb[i] <- n/(1 - r^2) * ( s1 / m1 + s2 / m2 -
-                               2 * r^2 * sqrt( s1 / m1 * s2 / m2 ) )
+    tb[i] <- n/(1 - r^2) * ( s1 / m1 + s2 / m2 - 2 * r^2 * sqrt( s1 / m1 * s2 / m2 ) )
   }
 
   pvalue <- (sum(tb > Ib) + 1)/(R + 1)

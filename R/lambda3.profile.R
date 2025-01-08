@@ -26,33 +26,39 @@ lambda3.profile <- function(x1, x2 = NULL) {
   mn <- min(max1, max2)
   omn <- 0:mn
   fac <- factorial( omn )
-  ch <- matrix(numeric( (mm + 1)^2 ), nrow = mm + 1, ncol = mm + 1 )
+  #ch <- matrix(numeric( (mm + 1)^2 ), nrow = mm + 1, ncol = mm + 1 )
+  #for ( i in 1:c(mm + 1) ) {
+  #  for ( j in c(i - 1):c(mm + 1) ) {
+  #    ch[i, j] <- choose(j, i - 1)
+  #  }
+  #}
+  i <- j <- 1:c(mm + 1)
+  ch <- choose( Rfast::rep_row(j, mm + 1), i - 1 )
   rownames(ch) <- colnames(ch) <- 0:mm
-  for ( i in 1:c(mm + 1) ) {
-    for ( j in c(i - 1):c(mm + 1) ) {
-      ch[i, j] <- choose(j, i - 1)
-    }
-  }
   ly1 <- lgamma(x1 + 1)
   ly2 <- lgamma(x2 + 1)
 
-  funa <- function(l3, n) {
-    f1 <- f2 <- numeric(n)
+  f2a <- list()
+  for (j in 1:n) {
+    a <-  1:c(ind[j] + 1)
+    f2a[[ j ]] <- ch[ a, x1[j] ] * ch[ a, x2[j] ] * fac[ a ]
+  }
+
+  funa <- function(l3, f2a, n) {
+    f2 <- numeric(n)
     con <-  - m1 - m2 + l3
     expo <- ( l3/( (m1 - l3) * (m2 - l3) ) )^omn
     l1 <- log(m1 - l3)
     l2 <- log(m2 - l3)
+    f1 <- x1 * l1 - ly1 + x2 * l2 - ly2
     for (j in 1:n) {
-      f1[j] <- x1[j] * l1 - ly1[j] + x2[j] * l2 - ly2[j]
-      f2[j] <- log( sum( ch[ 1:c(ind[j] + 1), x1[j] ] *
-                           ch[ 1:c(ind[j] + 1), x2[j] ] * fac[1:c(ind[j] + 1)] *
-                           expo[ 1:c(ind[j] + 1) ] ) )
+      f2[j] <- log( sum( f2a[[ j ]] * expo[ 1:c(ind[j] + 1) ] ) )
     }
     n * con + sum(f1) + sum( f2[abs(f2) < Inf] )
   }
 
   a <- b <- seq(0, min(m1, m2) - 0.1, by = 0.01)
-  for ( i in 1:length(a) )  b[i] <- funa(a[i], n)
+  for ( i in 1:length(a) )  b[i] <- funa(a[i], f2a, n)
   plot(a, b, ylab = 'Log-likelihood', type = 'l',
        xlab = expression( paste("Values of ", lambda[3]) ) )
   abline(v = a[which.max(b)], col = 2, lty = 2)

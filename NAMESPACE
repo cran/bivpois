@@ -2,9 +2,9 @@
 
 importFrom("stats", pchisq, optim, rpois, pnorm, cor, cov, var, optimize)
 importFrom("Rfast", rowMins, colmeans, colsums, colVars)
-importFrom("graphics", abline)
+importFrom("graphics", abline, contour, points)
 
 exportPattern("^[[:alpha:]]+")
 exportPattern("^[^\\.]")
 
-export(bp.mle, rbp, bp.gof, bp.gof2, lambda3.profile, dbp)
+export(bp.mle, rbp, bp.gof, bp.gof2, lambda3.profile, dbp, bp.contour)

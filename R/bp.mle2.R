@@ -17,7 +17,8 @@ bp.mle2 <- function(x1, x2 = NULL) {
 
   ## x1 and x2 are the two variables
   n <- length(x1)  ## sample size
-  m1 <- sum(x1) / n    ;    m2 <- sum(x2) / n
+  sx1 <- sum(x1)   ;  sx2 <- sum(x2)
+  m1 <- sx1 / n    ;    m2 <- sx2 / n
   ##  m1 and m2 estimates of lambda1* and lambda2* respectively
   ##  funa is the function to be maximised over lambda3
   ind <- Rfast::rowMins( cbind(x1, x2), value = TRUE )
@@ -25,32 +26,38 @@ bp.mle2 <- function(x1, x2 = NULL) {
   mm <- max( max1, max2 )   ;   mn <- min(max1, max2)
   omn <- 0:mn
   fac <- factorial( omn )
-  ch <- matrix(numeric( (mm + 1)^2 ), nrow = mm + 1, ncol = mm + 1 )
+  #ch <- matrix(numeric( (mm + 1)^2 ), nrow = mm + 1, ncol = mm + 1 )
+  #for ( i in 1:c(mm + 1) ) {
+  #  for ( j in c(i - 1):c(mm + 1) ) {
+  #    ch[i, j] <- choose(j, i - 1)
+  #  }
+  #}
+  i <- j <- 1:c(mm + 1)
+  ch <- choose( Rfast::rep_row(j, mm + 1), i - 1 )
   rownames(ch) <- colnames(ch) <- 0:mm
-  for ( i in 1:c(mm + 1) ) {
-    for ( j in c(i - 1):c(mm + 1) ) {
-      ch[i, j] <- choose(j, i - 1)
-    }
+  sly1 <- sum( lgamma(x1 + 1) )
+  sly2 <- sum( lgamma(x2 + 1) )
+  
+  f2a <- list()
+  for (j in 1:n) { 
+    a <-  1:c(ind[j] + 1)
+    f2a[[ j ]] <- ch[ a, x1[j] ] * ch[ a, x2[j] ] * fac[ a ]
   }
-  ly1 <- lgamma(x1 + 1)
-  ly2 <- lgamma(x2 + 1)
 
-  funa <- function(l3, n) {
-    f1 <- f2 <- numeric(n)
+  funa <- function(l3, f2a, n) {
+    f2 <- numeric(n)
     con <-  - m1 - m2 + l3
     expo <- ( l3/( (m1 - l3) * (m2 - l3) ) )^omn
     l1 <- log(m1 - l3)
     l2 <- log(m2 - l3)
+    f1 <- sx1 * l1 - sly1 + sx2 * l2 - sly2
     for (j in 1:n) {
-      f1[j] <- x1[j] * l1 - ly1[j] + x2[j] * l2 - ly2[j]
-      f2[j] <- log( sum( ch[ 1:c(ind[j] + 1), x1[j] ] *
-                           ch[ 1:c(ind[j] + 1), x2[j] ] * fac[1:c(ind[j] + 1)] *
-                           expo[ 1:c(ind[j] + 1) ] ) )
+      f2[j] <- log( sum( f2a[[ j ]] * expo[ 1:c(ind[j] + 1) ] ) )
     }
-    n * con + sum(f1) + sum( f2[abs(f2) < Inf] )
+    n * con + f1 + sum( f2[abs(f2) < Inf] )
   }
 
-  bar <- optimize( funa, c(0, min(m1, m2) - 0.05), n = n, tol = 1e-5, maximum = TRUE)
+  bar <- optimize( funa, c(0, min(m1, m2) - 0.05), f2a = f2a, n = n, tol = 1e-5, maximum = TRUE)
 
   l3 <- bar$maximum  ## maximum of the log-likelihood
   lambda <- c(m1 - l3, m2 - l3, l3)
